@@ -21,6 +21,23 @@ from typing import List
 from bmsDecorator import debug
 from bmsTypes import BMSRegion, City, BMSVenue, Venue, CinemaPageApiResponse
 
+import smtplib
+from email.message import EmailMessage
+import os
+
+def send_email_alert(message):
+    msg = EmailMessage()
+    msg['Subject'] = "🎟️ BMS Ticket Alert"
+    msg['From'] = os.environ['GMAIL_SENDER']
+    msg['To'] = os.environ['GMAIL_RECEIVER']
+    msg.set_content(message)
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(os.environ['GMAIL_SENDER'], os.environ['GMAIL_APP_PASSWORD'])
+        smtp.send_message(msg)
+        print("✅ Email sent!")
+
+
 def getObject():
     return type( '', (), {} ) # returns a simple object that can be used to add attributes
 
@@ -298,6 +315,7 @@ class BMS( object ):
         if found:
             # Movie tickets are now available
             print( "HURRAY! Movie tickets are now available" + formatAvailable )
+            send_email_alert("🎉 Tickets available! Go book now!")
             self.notification( "Hurray!", "Tickets for " + self.movie + " at " + self.title + " are now available" + formatAvailable )
             self.soundAlarm()
             return True

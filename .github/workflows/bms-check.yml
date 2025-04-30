@@ -17,7 +17,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Run BookMyShow checker
-        run: python BookMyShow.py --movie "hit" --cinema "pvr" --date "20240502" --regionCode "VIZA" --format "2D"
+        run: python BookMyShow.py --movie "retro" --cinema "icmg" --date "20250430" --regionCode "VIZA" --format "2D"
         env:
           GMAIL_SENDER: ${{ secrets.GMAIL_SENDER }}
           GMAIL_RECEIVER: ${{ secrets.GMAIL_RECEIVER }}
